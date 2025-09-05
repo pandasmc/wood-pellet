@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/wood-pellet/static/css/main.45ac3664.css",
-    "main.js": "/wood-pellet/static/js/main.7e0bbb67.js",
+    "main.js": "/wood-pellet/static/js/main.662c93cb.js",
     "static/js/453.f35b1f7b.chunk.js": "/wood-pellet/static/js/453.f35b1f7b.chunk.js",
     "static/media/camping1.png": "/wood-pellet/static/media/camping1.a5519ab9e94b195a1640.png",
     "static/media/heating-total.png": "/wood-pellet/static/media/heating-total.eaa7db2513cf0ece5522.png",
@@ -23,11 +23,11 @@
     "static/media/dure-logo.svg": "/wood-pellet/static/media/dure-logo.b82708fd149bd222808ae15f3ca3c064.svg",
     "index.html": "/wood-pellet/index.html",
     "main.45ac3664.css.map": "/wood-pellet/static/css/main.45ac3664.css.map",
-    "main.7e0bbb67.js.map": "/wood-pellet/static/js/main.7e0bbb67.js.map",
+    "main.662c93cb.js.map": "/wood-pellet/static/js/main.662c93cb.js.map",
     "453.f35b1f7b.chunk.js.map": "/wood-pellet/static/js/453.f35b1f7b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.45ac3664.css",
-    "static/js/main.7e0bbb67.js"
+    "static/js/main.662c93cb.js"
   ]
 }
