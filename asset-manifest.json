@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/wood-pellet/static/css/main.45ac3664.css",
+    "main.js": "/wood-pellet/static/js/main.7e0bbb67.js",
+    "static/js/453.f35b1f7b.chunk.js": "/wood-pellet/static/js/453.f35b1f7b.chunk.js",
+    "static/media/camping1.png": "/wood-pellet/static/media/camping1.a5519ab9e94b195a1640.png",
+    "static/media/heating-total.png": "/wood-pellet/static/media/heating-total.eaa7db2513cf0ece5522.png",
+    "static/media/camping3.png": "/wood-pellet/static/media/camping3.13ca55eec85a80b9763e.png",
+    "static/media/heating3.png": "/wood-pellet/static/media/heating3.13ed64a9984f509e9e98.png",
+    "static/media/heating2.png": "/wood-pellet/static/media/heating2.5b1fff548ca14c24465a.png",
+    "static/media/heating1.png": "/wood-pellet/static/media/heating1.09840d8deaa6b073966d.png",
+    "static/media/pet4.png": "/wood-pellet/static/media/pet4.9e245ae9e08b281831bb.png",
+    "static/media/pet2.png": "/wood-pellet/static/media/pet2.477eb91add5a3eee2274.png",
+    "static/media/pet3.png": "/wood-pellet/static/media/pet3.aacc7bcc80d13ccbb096.png",
+    "static/media/pet1.png": "/wood-pellet/static/media/pet1.b1b87213cd3c991a0a2c.png",
+    "static/media/camping5.png": "/wood-pellet/static/media/camping5.efa425aa0a39fa287db9.png",
+    "static/media/camping1-detail.jpg": "/wood-pellet/static/media/camping1-detail.6d6f93cc39c5ee39f2d3.jpg",
+    "static/media/camping2-detail.jpg": "/wood-pellet/static/media/camping2-detail.6b76d83fc567f2e6f38f.jpg",
+    "static/media/pet_detail.jpg": "/wood-pellet/static/media/pet_detail.44ea3ac7c3974ffd978f.jpg",
+    "static/media/re-info.jpg": "/wood-pellet/static/media/re-info.0e16bbc8d82c7b85ada6.jpg",
+    "static/media/heating_detail.jpg": "/wood-pellet/static/media/heating_detail.105cd132742c00a7f16a.jpg",
+    "static/media/pellets.jpg": "/wood-pellet/static/media/pellets.fdc20a9eaceaff3b391e.jpg",
+    "static/media/dure-logo.svg": "/wood-pellet/static/media/dure-logo.b82708fd149bd222808ae15f3ca3c064.svg",
+    "index.html": "/wood-pellet/index.html",
+    "main.45ac3664.css.map": "/wood-pellet/static/css/main.45ac3664.css.map",
+    "main.7e0bbb67.js.map": "/wood-pellet/static/js/main.7e0bbb67.js.map",
+    "453.f35b1f7b.chunk.js.map": "/wood-pellet/static/js/453.f35b1f7b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.45ac3664.css",
+    "static/js/main.7e0bbb67.js"
+  ]
+}
