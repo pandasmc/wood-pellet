@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import logo from "./dure-logo.svg";
 import "./App.css";
 import Shop from "./Shop"; // Shop 컴포넌트 import
@@ -30,19 +30,18 @@ function App() {
 
           {/* Footer */}
           <footer className="footer">
-          <p>DureFarm | Business License: 635-87-01234 | Address: Seoul, Korea</p>
-          <p>Help Center: +82 10-932-9321</p>
+            <p>DureFarm | Business License: 635-87-01234 | Address: Seoul, Korea</p>
+            <p>Help Center: +82 10-932-9321</p>
             <div className="footer-links">
-            <span>Terms of Use</span>
-            <span>Privacy Policy</span>
-            <span>Instagram</span>
-            <span>Blog</span>
-          </div>
+              <span>Terms of Use</span>
+              <span>Privacy Policy</span>
+              <span>Instagram</span>
+              <span>Blog</span>
+            </div>
           </footer>
         </div>
       </Router>
     </AuthProvider>
-
   );
 }
 
