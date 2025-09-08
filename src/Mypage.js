@@ -257,7 +257,7 @@ export default function SmartStoreOrdersLayout() {
 
       {/* Footer */}
       <footer className="max-w-6xl mx-auto px-4 pb-8 text-center text-xs text-neutral-500">
-        © {new Date().getFullYear()} Demo UI. All rights reserved.
+        © {new Date().getFullYear()} Dure-Farm. All rights reserved.
       </footer>
     </div>
   );
