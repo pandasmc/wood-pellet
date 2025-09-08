@@ -1,206 +1,264 @@
-// src/pages/MyPage.js
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useMemo, useState } from "react";
+import { Bars3Icon, ShoppingBagIcon, ArrowPathIcon, Cog6ToothIcon, ChatBubbleBottomCenterTextIcon, CreditCardIcon, UsersIcon } from "@heroicons/react/24/outline";
 
-export default function MyPage() {
-  // 임시 사용자 정보
-  const user = {
-    username: "USER",
-    address: "경남 진주시 에나로 128번길 29",
-    phone: "010-1234-5678",
-    email: "hong@test.com",
+// ---- Demo data -----------------------------------------------------------
+const demoOrders = Array.from({ length: 5 }).map((_, i) => {
+  const statuses = ["결제완료", "상품준비", "배송중", "배송완료", "구매확정"]; 
+  const methods = ["카드", "계좌이체", "네이버페이", "무통장"]; 
+  const rand = (n) => Math.floor(Math.random() * n);
+  const date = new Date();
+  date.setDate(date.getDate() - rand(30));
+  return {
+    id: `ORD-${String(20250000 + i)}`,
+    // customer: ["김철수", "이영희", "박민수", "정다은"][rand(4)],
+    product: ["캠핑용 두레팜 우드펠릿 포장형", "두레팜 우리집 고양이 화장실(무향)", "캠핑용 두레팜 우드펠릿 박스형"][rand(3)],
+    qty: [1, 1, 2, 3][rand(4)],
+    price: [15000, 20000, 12000][rand(3)],
+    status: statuses[rand(statuses.length)],
+    method: methods[rand(methods.length)],
+    date: date.toISOString().slice(0, 10),
   };
+});
 
-  // 장바구니 상태
-  const [cart, setCart] = useState([
-    { id: 1, name: "캠핑용 두레팜 우드펠릿 A", price: 12000, quantity: 2, selected: false },
-    { id: 2, name: "두레팜 우리집 고양이 화장실 (무향)", price: 15000, quantity: 3, selected: false },
-  ]);
+// ---- Utilities -----------------------------------------------------------
+const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  const [orders, setOrders] = useState([]);
-  const [showPayment, setShowPayment] = useState(false);
-  const [loading, setLoading] = useState(false);
+// ---- Sidebar -------------------------------------------------------------
+const MenuButton = ({ icon: Icon, label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`w-full flex items-center gap-3 px-4 py-2 rounded-xl transition shadow-sm/0 hover:shadow-sm hover:bg-white/60 border border-transparent hover:border-black/5 text-left ${active ? "bg-white border-black/10" : "bg-white/40"}`}
+  >
+    <Icon className="w-5 h-5" />
+    <span className="text-sm font-medium">{label}</span>
+  </button>
+);
 
-  const totalPrice = cart.reduce(
-    (sum, item) => sum + (item.selected ? item.price * item.quantity : 0),
-    0
+// ---- Top Filters for Orders ---------------------------------------------
+function OrdersFilters({ keyword, setKeyword, status, setStatus, dateFrom, setDateFrom, dateTo, setDateTo }) {
+  const statuses = ["전체", "결제완료", "상품준비", "배송중", "배송완료", "구매확정"]; 
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+      <input
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="주문번호, 상품명 검색"
+        className="md:col-span-5 px-3 py-2 rounded-xl border border-black/10 focus:outline-none focus:ring-2 focus:ring-black/10"
+      />
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        className="md:col-span-2 px-3 py-2 rounded-xl border border-black/10"
+      >
+        {statuses.map((s) => (
+          <option key={s} value={s}>{s}</option>
+        ))}
+      </select>
+      <input
+        type="date"
+        value={dateFrom}
+        onChange={(e) => setDateFrom(e.target.value)}
+        className="md:col-span-2 px-3 py-2 rounded-xl border border-black/10"
+      />
+      <input
+        type="date"
+        value={dateTo}
+        onChange={(e) => setDateTo(e.target.value)}
+        className="md:col-span-2 px-3 py-2 rounded-xl border border-black/10"
+      />
+    </div>
   );
+}
 
-  const toggleSelect = (id) => {
-    setCart(cart.map(item => item.id === id ? {...item, selected: !item.selected} : item));
-  };
+// ---- Orders Table --------------------------------------------------------
+function OrdersTable({ rows }) {
+  return (
+    <div className="overflow-auto rounded-2xl border border-black/10 bg-white">
+      <table className="min-w-full text-sm">
+        <thead className="bg-neutral-50">
+          <tr className="text-neutral-500">
+            <th className="px-4 py-3 text-left">주문번호</th>
+            <th className="px-4 py-3 text-left">주문일</th>
+            <th className="px-4 py-3 text-left">상품</th>
+            <th className="px-4 py-3 text-right">수량</th>
+            <th className="px-4 py-3 text-right">금액</th>
+            <th className="px-4 py-3 text-left">상태</th>
+            <th className="px-4 py-3 text-left">결제</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id} className="border-t border-black/5 hover:bg-neutral-50">
+              <td className="px-4 py-3 font-medium">{r.id}</td>
+              <td className="px-4 py-3">{r.date}</td>
+              <td className="px-4 py-3">{r.product}</td>
+              <td className="px-4 py-3 text-right">{r.qty}</td>
+              <td className="px-4 py-3 text-right">{numberWithCommas(r.price)}원</td>
+              <td className="px-4 py-3">
+                <span className={`px-2 py-1 text-xs rounded-lg border ${
+                  r.status === "결제완료" ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
+                  r.status === "상품준비" ? "bg-amber-50 border-amber-200 text-amber-700" :
+                  r.status === "배송중" ? "bg-sky-50 border-sky-200 text-sky-700" :
+                  r.status === "배송완료" ? "bg-indigo-50 border-indigo-200 text-indigo-700" :
+                  "bg-neutral-50 border-neutral-200 text-neutral-700"
+                }`}>{r.status}</span>
+              </td>
+              <td className="px-4 py-3">{r.method}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
-  const handleRemoveSelected = () => {
-    setCart(cart.filter(item => !item.selected));
-  };
+// ---- Content Panels ------------------------------------------------------
+function OrdersPanel() {
+  const [keyword, setKeyword] = useState("");
+  const [status, setStatus] = useState("전체");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
 
-  // 결제 모달 열기
-  const handleOrder = () => {
-    if (!cart.some(item => item.selected)) return; // 선택된 상품 없으면 종료
-    setShowPayment(true);
-  };
+  const filtered = useMemo(() => {
+    return demoOrders.filter((o) => {
+      const kw = keyword.trim();
+      const hitKw = kw ? [o.id, o.customer, o.product].some((t) => t.includes(kw)) : true;
+      const hitSt = status === "전체" ? true : o.status === status;
+      const hitFrom = dateFrom ? o.date >= dateFrom : true;
+      const hitTo = dateTo ? o.date <= dateTo : true;
+      return hitKw && hitSt && hitFrom && hitTo;
+    });
+  }, [keyword, status, dateFrom, dateTo]);
 
-  // 결제 진행
-  const handlePayment = () => {
-    setLoading(true);
-    setTimeout(() => {
-      const newOrders = cart
-        .filter(item => item.selected)
-        .map((item, idx) => ({
-          id: orders.length + idx + 1,
-          productName: item.name,
-          quantity: item.quantity,
-          price: item.price * item.quantity,
-          date: new Date().toISOString().split("T")[0],
-          status: "배송중",
-        }));
-      setOrders([...orders, ...newOrders]);
-      setCart(cart.filter(item => !item.selected));
-      setLoading(false);
-      setShowPayment(false);
-    }, 2000); // 2초 결제 로딩
-  };
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const pageRows = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-10">
-      {/* 마이페이지 정보 */}
-      <div className="max-w-[800px] mx-auto p-6 bg-white rounded-lg text-left">
-        <div className="space-y-4">
-          <p><strong>{user.username}</strong>님, 접속해주셔서 감사합니다!</p>
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">주문/배송</h2>
+          <p className="text-sm text-neutral-500">총 {total}건</p>
         </div>
+        <button
+          onClick={() => {
+            setKeyword("");
+            setStatus("전체");
+            setDateFrom("");
+            setDateTo("");
+          }}
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-black/10 bg-white hover:bg-neutral-50"
+        >
+          <ArrowPathIcon className="w-4 h-4" /> 필터 초기화
+        </button>
       </div>
 
-      {/* 장바구니 */}
-      <div className="max-w-[800px] mx-auto p-6 bg-white rounded-lg mt-10">
-        <h2 className="text-2xl font-bold mb-6 text-center">장바구니</h2>
-        {cart.length === 0 ? (
-          <p className="text-center text-gray-500">장바구니가 비어 있습니다.</p>
-        ) : (
-          <>
-            <ul className="divide-y">
-              {cart.map((item) => (
-                <li key={item.id} className="flex justify-between items-center py-4">
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      checked={item.selected}
-                      onChange={() => toggleSelect(item.id)}
-                      className="w-4 h-4"
-                    />
-                    <div>
-                      <p className="font-semibold">{item.name}</p>
-                      <p>{item.price.toLocaleString()}원 × {item.quantity}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setCart(cart.filter(i => i.id !== item.id))}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    삭제
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 text-right">
-              <p className="text-xl font-bold">
-                총 합계: {totalPrice.toLocaleString()}원
-              </p>
-              <button
-                onClick={handleOrder}
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-              >
-                선택상품 주문하기
-              </button>
-              <button
-                onClick={handleRemoveSelected}
-                className="mt-4 ml-2 bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition"
-              >
-                선택상품 삭제
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+      <OrdersFilters
+        keyword={keyword}
+        setKeyword={setKeyword}
+        status={status}
+        setStatus={setStatus}
+        dateFrom={dateFrom}
+        setDateFrom={setDateFrom}
+        dateTo={dateTo}
+        setDateTo={setDateTo}
+      />
 
-      {/* 주문 내역 */}
-      <div className="max-w-[800px] mx-auto px-6 py-12 mt-10 bg-white rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-6 text-center">주문 내역</h2>
-        {orders.length === 0 ? (
-          <p className="text-gray-600 text-center">주문 내역이 없습니다.</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">주문번호</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">상품명</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">수량</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">가격</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">주문일</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">상태</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {orders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-700">{order.id}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">{order.productName}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">{order.quantity}</td>
-                    <td className="px-6 py-4 text-sm text-green-600 font-semibold">{order.price.toLocaleString()}원</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{order.date}</td>
-                    <td className={`px-6 py-4 text-sm font-medium ${
-                      order.status === "배송완료" ? "text-green-600" : "text-orange-500"
-                    }`}>{order.status}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      <OrdersTable rows={pageRows} />
 
-      {/* 결제 모달 */}
-      <AnimatePresence>
-        {showPayment && (
-          <motion.div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white rounded-lg p-8 w-96 text-center relative"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
+      {/* Pagination */}
+      <div className="flex items-center justify-center gap-2">
+        <button
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className="px-3 py-1 rounded-lg border border-black/10 bg-white disabled:opacity-40"
+        >
+          이전
+        </button>
+        <span className="text-sm text-neutral-600">{page} / {totalPages}</span>
+        <button
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          disabled={page === totalPages}
+          className="px-3 py-1 rounded-lg border border-black/10 bg-white disabled:opacity-40"
+        >
+          다음
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const Placeholder = ({ title, icon: Icon }) => (
+  <div className="flex flex-col items-center justify-center h-[420px] rounded-2xl border border-dashed border-black/10 bg-white/60 text-center">
+    <Icon className="w-10 h-10 mb-3" />
+    <h3 className="text-lg font-semibold mb-1">{title}</h3>
+    <p className="text-sm text-neutral-500">아직 확인할 내역이 없습니다.</p>
+  </div>
+);
+
+// ---- Main Layout ---------------------------------------------------------
+export default function SmartStoreOrdersLayout() {
+  const menus = [
+    { key: "orders", label: "주문/배송", icon: ShoppingBagIcon },
+    { key: "cs", label: "리뷰", icon: ChatBubbleBottomCenterTextIcon },
+    { key: "products", label: "문의", icon: Bars3Icon },
+    { key: "customers", label: "개인정보수정", icon: UsersIcon },
+  ];
+  const [openSide, setOpenSide] = useState(true);
+  const [active, setActive] = useState("orders");
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100">
+      {/* App Header */}
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/70 border-b border-black/10">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              className="md:hidden p-2 rounded-xl border border-black/10 bg-white"
+              onClick={() => setOpenSide((v) => !v)}
             >
-              {loading ? (
-                <div className="flex flex-col items-center gap-4">
-                  <p className="text-lg font-semibold">결제 진행 중...</p>
-                  <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                </div>
-              ) : (
-                <>
-                  <h3 className="text-xl font-bold mb-4">결제창</h3>
-                  <p className="mb-6">저장된 결제 수단으로 결제를 진행합니다.</p>
-                  <button
-                    onClick={handlePayment}
-                    className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
-                  >
-                    결제 진행
-                  </button>
-                  <button
-                    onClick={() => setShowPayment(false)}
-                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                  >
-                    ✕
-                  </button>
-                </>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <Bars3Icon className="w-5 h-5" />
+            </button>
+            <div className="font-bold tracking-tight text-lg">마이페이지</div>
+          </div>
+        </div>
+      </header>
+
+      {/* Body */}
+      <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-5">
+        {/* Sidebar */}
+        <aside className={`md:col-span-3 lg:col-span-2 ${openSide ? "block" : "hidden md:block"}`}>
+          <div className="sticky top-[72px] space-y-2">
+            {menus.map((m) => (
+              <MenuButton
+                key={m.key}
+                icon={m.icon}
+                label={m.label}
+                active={active === m.key}
+                onClick={() => setActive(m.key)}
+              />
+            ))}
+          </div>
+        </aside>
+
+        {/* Content */}
+        <main className="md:col-span-9 lg:col-span-10">
+          {active === "orders" && <OrdersPanel />}
+          {active === "cs" && <Placeholder title="문의/리뷰" icon={ChatBubbleBottomCenterTextIcon} />}
+          {active === "products" && <Placeholder title="상품관리" icon={Bars3Icon} />}
+          {active === "customers" && <Placeholder title="고객관리" icon={UsersIcon} />}
+          {active === "settlement" && <Placeholder title="정산/매출" icon={CreditCardIcon} />}
+          {active === "settings" && <Placeholder title="설정" icon={Cog6ToothIcon} />}
+        </main>
+      </div>
+
+      {/* Footer */}
+      <footer className="max-w-6xl mx-auto px-4 pb-8 text-center text-xs text-neutral-500">
+        © {new Date().getFullYear()} Demo UI. All rights reserved.
+      </footer>
     </div>
   );
 }
