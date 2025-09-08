@@ -64,18 +64,14 @@ export default function MyPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
       {/* 마이페이지 정보 */}
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg mt-10">
-        <h2 className="text-2xl font-bold mb-6 text-center">마이페이지</h2>
+      <div className="max-w-[800px] mx-auto p-6 bg-white rounded-lg text-left">
         <div className="space-y-4">
-          <p><strong>이름:</strong> {user.username}</p>
-          <p><strong>주소:</strong> {user.address}</p>
-          <p><strong>전화번호:</strong> {user.phone}</p>
-          <p><strong>이메일:</strong> {user.email}</p>
+          <p><strong>{user.username}</strong>님, 접속해주셔서 감사합니다!</p>
         </div>
       </div>
 
       {/* 장바구니 */}
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg mt-10">
+      <div className="max-w-[800px] mx-auto p-6 bg-white rounded-lg mt-10">
         <h2 className="text-2xl font-bold mb-6 text-center">장바구니</h2>
         {cart.length === 0 ? (
           <p className="text-center text-gray-500">장바구니가 비어 있습니다.</p>
@@ -127,7 +123,7 @@ export default function MyPage() {
       </div>
 
       {/* 주문 내역 */}
-      <div className="max-w-6xl mx-auto px-6 py-12 mt-10 bg-white rounded-lg shadow">
+      <div className="max-w-[800px] mx-auto px-6 py-12 mt-10 bg-white rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-6 text-center">주문 내역</h2>
         {orders.length === 0 ? (
           <p className="text-gray-600 text-center">주문 내역이 없습니다.</p>

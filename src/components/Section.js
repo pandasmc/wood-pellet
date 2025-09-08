@@ -8,18 +8,18 @@ export default function Section({ title, text, img, reverse }) {
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
-      className={`h-[500px] md:flex md:flex-row ${reverse ? "md:flex-row-reverse bg-[#dfc4aa]" : ""} gap-10 px-10 py-16 items-center`}
+      className={` md:flex md:flex-row ${reverse ? "md:flex-row-reverse bg-[#dfc4aa]" : ""} gap-10 px-10 py-16 items-center`}
     >
       <div
         className={`max-w-[1100px] mx-auto flex flex-col md:flex-row ${
           reverse ? "md:flex-row-reverse" : ""
         } gap-10 items-center`}
       >
-      <div className={`${reverse ? "text-left" : "text-right"}`}>
-        <h2 className="text-3xl font-bold mb-4">{title}</h2>
-        <p className="text-lg text-gray-700">{text}</p>
-      </div>
-      <img src={img} alt={title} width="550px" className="rounded-2xl" />
+        <div className={`${reverse ? "text-left" : "text-right"}`}>
+          <h2 className="text-3xl font-bold mb-4">{title}</h2>
+          <p className="text-lg text-gray-700  whitespace-pre-line">{text}</p>
+        </div>
+        <img src={img} alt={title} className="rounded-2xl max-w-[500px] min-w-[300px]"  />
       </div>
     </motion.section>
   );

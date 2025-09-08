@@ -7,10 +7,12 @@ import info from "./assets/images/re-info.jpg";
 import camping1 from "./assets/items/camping1.png";
 import camping3 from "./assets/items/camping3.png";
 import camping5 from "./assets/items/camping5.png";
+import camping6 from "./assets/items/camping6.png";
+import camping7 from "./assets/items/camping7.png";
 import heating1 from "./assets/items/heating1.png";
 import heating2 from "./assets/items/heating2.png";
 import heating3 from "./assets/items/heating3.png";
-import heating4 from "./assets/items/heating-total.png";
+import heating4 from "./assets/items/heating4.png";
 import pet1 from "./assets/items/pet1.png";
 import pet2 from "./assets/items/pet2.png";
 import pet3 from "./assets/items/pet3.png";
@@ -18,8 +20,9 @@ import pet4 from "./assets/items/pet4.png";
 
 const productImages = {
   1: camping1,
-  2: camping3,
-  3: camping5,
+  2: camping5,
+  3: camping6,
+  4: camping7,
   5: pet1,
   6: pet2,
   7: pet3,
@@ -34,9 +37,10 @@ const productImages = {
 
 function Shop() {
   const [products, setProducts] = useState([
-    { id: 1, name: "캠핑용 두레팜 우드펠릿 A", price: 12000, category: "캠핑용", short: "패키징 타입으로 간편하게 챙겨가세요" },
-    { id: 2, name: "캠핑용 두레팜 우드펠릿 낱개", price: 2000, category: "캠핑용", short: "실속있게 필요한 만큼 챙기는 낱개 타입"},
-    { id: 3, name: "캠핑용 두레팜 우드펠릿 B", price: 15000, category: "캠핑용", short: "좀 더 큰 용량으로 넉넉하게" },
+    { id: 1, name: "캠핑용 두레팜 우드펠릿 박스형", price: 12000, category: "캠핑용", short: "낱개 포장으로 캠핑 등에 간편히 챙겨가세요" },
+    { id: 2, name: "캠핑용 두레팜 우드펠릿 포장형", price: 15000, category: "캠핑용", short: "실속 있는 용량, 간편한 다회 사용!"},
+    { id: 3, name: "캠핑용 두레팜 우드펠릿 다용도", price: 15000, category: "캠핑용", short: "다용도 캠핑 우드펠릿! 캠핑 필수품" },
+    { id: 4, name: "캠핑용 두레팜 우드펠릿 바베큐용", price: 15000, category: "캠핑용", short: "두레팜 우드펠릿으로 안전하고 맛있게 즐기세요" },
     { id: 5, name: "두레팜 우리집 고양이 화장실 (무향)", price: 15000, category: "반려동물용", short: "친환경 우드펠릿으로 믿을 수 있는 화장실 펠릿" },
     { id: 6, name: "두레팜 우리집 고양이 화장실 (민트향)", price: 13000, category: "반려동물용", short: "보다 단단하게 가공하여 치우기 간편하고 깔끔" },
     { id: 7, name: "두레팜 우리집 고양이 화장실 (우드향)", price: 20000, category: "반려동물용", short: "고양이가 좋아하는 형태로 가공하여 기호성이 높은 타입" },

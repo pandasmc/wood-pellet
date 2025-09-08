@@ -12,10 +12,11 @@ function ProductModal({ product, onClose }) {
   let categoryImage;
   switch (product.id) {
     case 1:
-    case 2:
+    case 3:
+    case 4:
       categoryImage = require("../assets/images/camping1-detail.jpg");
       break;
-    case 3:
+    case 2:
       categoryImage = require("../assets/images/camping2-detail.jpg");
       break;
     case 5:
@@ -38,10 +39,13 @@ function ProductModal({ product, onClose }) {
       itemImage = require("../assets/items/camping1.png");
       break;
     case 2:
-      itemImage = require("../assets/items/camping3.png");
+      itemImage = require("../assets/items/camping5.png");
       break;
     case 3:
-      itemImage = require("../assets/items/camping5.png");
+      itemImage = require("../assets/items/camping6.png");
+      break;
+    case 4:
+      itemImage = require("../assets/items/camping7.png");
       break;
     case 5:
       itemImage = require("../assets/items/pet1.png");

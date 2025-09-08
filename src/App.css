@@ -19,6 +19,13 @@
     font-display: swap;
 }
 
+.navbar-abs{
+  position : pixed;
+  top : 0;
+  left: 0;
+  width: 100%;
+  z-index:1000;
+}
 
 .App {
   text-align: center;
@@ -101,7 +108,7 @@ body {
 }
 
 .product-section h3 {
-  font-size : 18px;
+  font-size : 16px;
   color : black;
 }
 
@@ -264,7 +271,7 @@ body {
 
 .purchase-section h3 {
   margin-top: 0;
-  font-size: 24px;
+  font-size: 20px;
   color: #885D34; /* 주력 갈색으로 변경 */
 }
 

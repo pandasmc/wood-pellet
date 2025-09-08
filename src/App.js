@@ -7,7 +7,6 @@ import Home from "./Home"; // Home import (Home.js)
 import Login from "./Login"; // 
 import Signup from "./Signup";
 import Navbar from "./components/NavBar";
-import OrderList from "./OrderList";
 import { AuthProvider } from "./context/AuthContext";
 import Mypage from "./Mypage";
 
@@ -17,14 +16,12 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
-
           {/* 라우트 정의 */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/orders" element={<OrderList />} />
             <Route path="/mypage" element={<Mypage />} />
           </Routes>
 

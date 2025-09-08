@@ -9,6 +9,7 @@ import img15 from "./assets/homeItem/15.png";
 import img16 from "./assets/homeItem/16.png";
 import img17 from "./assets/homeItem/17.png";
 import img18 from "./assets/homeItem/18.png";
+import img19 from "./assets/homeItem/t-heat.png";
 import img5 from "./assets/homeItem/5.png";
 import home1 from "./assets/homeItem/home1.jpg";
 import home2 from "./assets/homeItem/home2.jpg";
@@ -53,7 +54,7 @@ function Modal({ isOpen, onClose, imgSrc }) {
 }
 
 export default function Home() {
-  const images = [img15, img16, img17, img18, img5];
+  const images = [img15, img16, img17, img18, img5, img19];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -139,16 +140,19 @@ export default function Home() {
       <div className="section-home">
         <Section
           title="버섯 폐배지 80만톤"
-          text="국내 버섯 배지는 매년 80만톤 씩 폐기되고 있습니다. 이때의 폐기비용은 3,200억원. 농가에는 큰 부담입니다.
-               두레팜은 해당 문제를 해소하고자, 버섯폐배지와 같은 농업부산물을 이용해 친환경적으로 우드펠릿을 제작하게 되었습니다."
+          text={<>
+                  <p>국내 버섯 배지는 매년 80만톤 씩 폐기되고 있습니다. 이때의 폐기비용은 3,200억원. 농가에는 큰 부담입니다.</p>
+                  <p>두레팜은 해당 문제를 해소하고자, 버섯폐배지와 같은 농업부산물을 이용해 친환경적으로 우드펠릿을 제작하게 되었습니다.</p>
+                </>}
           img={home1}
           reverse={false}
         />
         <Section
           title="두레팜 우드펠릿"
-          text="자사의 펠릿은 슬러지 없이 고순도 버섯폐배지를 기반으로 균사체 바이오 필름 코팅과 천연 촉진제를 적용해
-                연소 효율과 환경 안전성을 동시에 확보한 고기능성 연료 입니다. 산업용 중심의 배지 펠릿과 달리
-                소비자에게도 유용히 사용될 수 있는 제품들을 제공 중입니다."
+          text={<>
+                  <p>자사의 펠릿은 슬러지 없이 고순도 버섯폐배지를 기반으로 균사체 바이오 필름 코팅과 천연 촉진제를 적용해 연소 효율과 환경 안전성을 동시에 확보한 고기능성 연료 입니다.</p>
+                  <p>산업용 중심의 배지 펠릿과 달리 소비자에게도 유용히 사용될 수 있는 제품들을 제공 중입니다</p>
+                </>}
           img={home2}
           reverse={true}
         />

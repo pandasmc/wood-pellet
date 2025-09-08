@@ -24,12 +24,9 @@ export default function NavBar() {
               </button>
 
               {/* 드롭다운 */}
-              <div className="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+              <div className="absolute right-0 mt-2 w-[170px] bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
                 <Link to="/mypage" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                  마이페이지
-                </Link>
-                <Link to="/orders" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                  주문내역
+                  마이페이지 & 장바구니
                 </Link>
                 <button
                   onClick={logout}
